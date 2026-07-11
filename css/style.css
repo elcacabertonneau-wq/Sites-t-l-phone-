@@ -103,13 +103,14 @@ a { color: inherit; }
 
 .btn--small { font-size: .9rem; padding: .6rem 1.4rem; }
 
-/* Reveal on scroll */
-.reveal {
+/* Reveal au scroll — seulement si JS actif (classe .js posée sur <html>),
+   sinon le contenu reste toujours visible */
+.js .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1);
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ============================================================
    NAV
@@ -126,7 +127,8 @@ a { color: inherit; }
   z-index: 100;
   transition: background .35s ease, box-shadow .35s ease, backdrop-filter .35s ease;
 }
-.nav.is-scrolled {
+.nav.is-scrolled,
+html:not(.js) .nav {
   background: rgba(10, 14, 17, .82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -479,7 +481,7 @@ a { color: inherit; }
 }
 
 /* Pain pide : galette plate et allongée, croûte dorée, pas un bun de burger */
-.slayer--bread-top {
+.slayer--bread-top { --off: 4;
   inset: 16% 4%;
   border-radius: 48% 52% 50% 50% / 90% 85% 88% 92%;
   background:
@@ -504,13 +506,13 @@ a { color: inherit; }
     repeating-linear-gradient(100deg, transparent 0 26px, rgba(120, 70, 25, .35) 26px 30px);
 }
 
-.slayer--sauce {
+.slayer--sauce { --off: 3;
   background: radial-gradient(circle at 45% 40%, #fdf6e3, #f2e3bd 60%, #e4cf9b);
   inset: 20% 8%;
   border-radius: 46% 54% 52% 48% / 50% 47% 53% 50%;
 }
 
-.slayer--onion { inset: 22% 12%; box-shadow: none; background: transparent; }
+.slayer--onion { --off: 2; inset: 22% 12%; box-shadow: none; background: transparent; }
 .slayer--onion b {
   position: absolute;
   width: 42%; height: 42%;
@@ -522,7 +524,7 @@ a { color: inherit; }
 .slayer--onion b:nth-child(2) { top: 30%; right: 4%; width: 36%; height: 36%; }
 .slayer--onion b:nth-child(3) { bottom: 2%; left: 28%; width: 38%; height: 38%; }
 
-.slayer--tomato { inset: 20% 10%; box-shadow: none; background: transparent; }
+.slayer--tomato { --off: 1; inset: 20% 10%; box-shadow: none; background: transparent; }
 .slayer--tomato b {
   position: absolute;
   width: 46%; height: 46%;
@@ -534,7 +536,7 @@ a { color: inherit; }
 .slayer--tomato b:nth-child(2) { top: 26%; right: 2%; }
 .slayer--tomato b:nth-child(3) { bottom: 0; left: 26%; }
 
-.slayer--cabbage {
+.slayer--cabbage { --off: 0;
   inset: 18% 7%;
   background:
     repeating-conic-gradient(from 20deg, #8a3fb8 0 14deg, #b06ad4 14deg 26deg, #6d2f96 26deg 40deg);
@@ -542,14 +544,14 @@ a { color: inherit; }
   filter: saturate(1.1);
 }
 
-.slayer--salad {
+.slayer--salad { --off: -1;
   inset: 17% 5%;
   background:
     radial-gradient(circle at 30% 30%, #9ede56, #5cb52e 55%, #3f8c1e);
   border-radius: 58% 42% 55% 45% / 45% 60% 40% 55%;
 }
 
-.slayer--feta { inset: 24% 14%; box-shadow: none; background: transparent; }
+.slayer--feta { --off: -2; inset: 24% 14%; box-shadow: none; background: transparent; }
 .slayer--feta b {
   position: absolute;
   width: 24%; height: 20%;
@@ -563,7 +565,7 @@ a { color: inherit; }
 .slayer--feta b:nth-child(4) { bottom: 6%; right: 22%; transform: rotate(-22deg); }
 
 /* Viande : copeaux de döner découpés à la broche, pas un steak haché */
-.slayer--meat { inset: 15% 6%; box-shadow: none; background: transparent; }
+.slayer--meat { --off: -3; inset: 15% 6%; box-shadow: none; background: transparent; }
 .slayer--meat b {
   position: absolute;
   height: 26%;
@@ -586,7 +588,7 @@ a { color: inherit; }
 .slayer--meat b:nth-child(4) { width: 50%; bottom: 14%; left: 2%;  transform: rotate(10deg); }
 .slayer--meat b:nth-child(5) { width: 54%; bottom: 2%;  right: 6%; transform: rotate(-12deg); }
 
-.slayer--bread-bot {
+.slayer--bread-bot { --off: -4;
   inset: 16% 3%;
   border-radius: 50% 50% 48% 52% / 88% 92% 86% 90%;
   background:
@@ -652,6 +654,29 @@ a { color: inherit; }
     border-radius: 999px;
   }
   .doner__ingredients li.is-active { transform: none; background: rgba(62,230,240,.1); }
+}
+
+/* ---------- Sans JavaScript : boucle d'explosion en pur CSS ---------- */
+
+html:not(.js) .doner { height: auto; }
+html:not(.js) .doner__sticky { position: static; height: auto; overflow: visible; padding-bottom: 3rem; }
+html:not(.js) .doner__scene { height: min(72svh, 640px); }
+html:not(.js) .doner__stack {
+  transform: rotateX(56deg) rotateZ(-32deg);
+  animation: stack-spin 30s linear infinite;
+}
+html:not(.js) .slayer { animation: layer-explode 5.5s ease-in-out infinite alternate; }
+html:not(.js) .doner__shadow { transform: translateZ(-180px); }
+html:not(.js) .doner__ingredients li { opacity: .85; color: var(--white); }
+html:not(.js) .doner__hint { display: none; }
+
+@keyframes stack-spin {
+  from { transform: rotateX(56deg) rotateZ(0deg); }
+  to   { transform: rotateX(56deg) rotateZ(360deg); }
+}
+@keyframes layer-explode {
+  0%, 12%   { transform: translateZ(calc(var(--off) * 9px)); }
+  88%, 100% { transform: translateZ(calc(var(--off) * 34px)); }
 }
 
 /* ============================================================

@@ -30,21 +30,30 @@
     }
   });
 
-  /* ---------- Reveal au scroll ---------- */
-  var revealEls = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window && !prefersReducedMotion) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(function (el) { io.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+  /* ---------- Reveal au scroll ----------
+     Vérification par getBoundingClientRect (plus fiable que
+     IntersectionObserver dans les iframes/aperçus sandboxés). */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+  function checkReveals() {
+    if (!revealEls.length) return;
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    revealEls = revealEls.filter(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.94 && r.bottom > 0) {
+        el.classList.add("is-visible");
+        return false;
+      }
+      return true;
+    });
   }
+  if (prefersReducedMotion) {
+    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+    revealEls = [];
+  }
+  checkReveals();
+  window.addEventListener("scroll", checkReveals, { passive: true });
+  window.addEventListener("resize", checkReveals, { passive: true });
+  window.addEventListener("load", checkReveals);
 
   /* ---------- Statut ouvert / fermé ----------
      lun-jeu 11:30-02:00 · ven 11:30-03:00 · sam 11:30-03:00 · dim 12:00-02:00
@@ -125,9 +134,20 @@
   }, { passive: true });
 
   var idleT = 0;
+  var frame = 0;
 
   function render() {
-    computeTarget();
+    frame++;
+    // filet de sécurité : re-vérifier les reveals même si l'event scroll ne vient pas
+    if (frame % 20 === 0) checkReveals();
+
+    // si la page ne peut pas scroller (aperçu iframe étendu), boucle automatique
+    var scrollable = document.documentElement.scrollHeight - window.innerHeight > 300;
+    if (scrollable) {
+      computeTarget();
+    } else {
+      target = 0.5 - 0.5 * Math.cos(idleT * 1.1);
+    }
     // interpolation pour une fluidité totale
     progress += (target - progress) * 0.09;
     smoothPX += (pointerX - smoothPX) * 0.05;
