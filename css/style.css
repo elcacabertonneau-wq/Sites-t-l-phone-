@@ -656,19 +656,50 @@ html:not(.js) .nav {
   .doner__ingredients li.is-active { transform: none; background: rgba(62,230,240,.1); }
 }
 
-/* ---------- Sans JavaScript : boucle d'explosion en pur CSS ---------- */
+/* ---------- Sans JavaScript ----------
+   1) Navigateurs modernes : animation pilotée au scroll en pur CSS
+      (animation-timeline), même comportement que la version JS.
+   2) Navigateurs plus anciens : boucle automatique d'explosion. */
 
-html:not(.js) .doner { height: auto; }
-html:not(.js) .doner__sticky { position: static; height: auto; overflow: visible; padding-bottom: 3rem; }
-html:not(.js) .doner__scene { height: min(72svh, 640px); }
-html:not(.js) .doner__stack {
-  transform: rotateX(56deg) rotateZ(-32deg);
-  animation: stack-spin 30s linear infinite;
-}
-html:not(.js) .slayer { animation: layer-explode 5.5s ease-in-out infinite alternate; }
 html:not(.js) .doner__shadow { transform: translateZ(-180px); }
 html:not(.js) .doner__ingredients li { opacity: .85; color: var(--white); }
-html:not(.js) .doner__hint { display: none; }
+
+/* 1 — scroll-driven CSS (Chrome 115+, Safari 26+, Edge…) */
+@supports (animation-timeline: view()) {
+  html:not(.js) .doner {
+    view-timeline-name: --doner;
+    view-timeline-axis: block;
+  }
+  html:not(.js) .doner__stack {
+    animation: stack-spin-scroll linear both;
+    animation-timeline: --doner;
+  }
+  html:not(.js) .slayer {
+    animation: layer-explode-scroll linear both;
+    animation-timeline: --doner;
+  }
+}
+@keyframes stack-spin-scroll {
+  from { transform: rotateX(56deg) rotateZ(-24deg); }
+  to   { transform: rotateX(56deg) rotateZ(148deg); }
+}
+@keyframes layer-explode-scroll {
+  0%, 18%   { transform: translateZ(calc(var(--off) * 9px)); }
+  82%, 100% { transform: translateZ(calc(var(--off) * 40px)); }
+}
+
+/* 2 — boucle automatique si le scroll-driven CSS n'est pas supporté */
+@supports not (animation-timeline: view()) {
+  html:not(.js) .doner { height: auto; }
+  html:not(.js) .doner__sticky { position: static; height: auto; overflow: visible; padding-bottom: 3rem; }
+  html:not(.js) .doner__scene { height: min(72svh, 640px); }
+  html:not(.js) .doner__stack {
+    transform: rotateX(56deg) rotateZ(-32deg);
+    animation: stack-spin 30s linear infinite;
+  }
+  html:not(.js) .slayer { animation: layer-explode 5.5s ease-in-out infinite alternate; }
+  html:not(.js) .doner__hint { display: none; }
+}
 
 @keyframes stack-spin {
   from { transform: rotateX(56deg) rotateZ(0deg); }
