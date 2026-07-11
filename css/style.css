@@ -478,29 +478,39 @@ a { color: inherit; }
   box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
 }
 
+/* Pain pide : galette plate et allongée, croûte dorée, pas un bun de burger */
 .slayer--bread-top {
-  background: radial-gradient(circle at 38% 30%, #f0c078, #d99a4e 58%, #b5793a);
-  inset: 13%;
+  inset: 16% 4%;
+  border-radius: 48% 52% 50% 50% / 90% 85% 88% 92%;
+  background:
+    radial-gradient(ellipse 120% 90% at 42% 28%, #f3cd8c, #dda45c 55%, #b07338 85%, #8f5626);
+  box-shadow:
+    inset 0 -10px 18px rgba(90, 50, 15, .45),
+    inset 0 8px 14px rgba(255, 235, 190, .5),
+    0 18px 40px rgba(0, 0, 0, .35);
 }
 .slayer--bread-top i {
   position: absolute; inset: 0;
-  border-radius: 50%;
+  border-radius: inherit;
+  /* graines de sésame + lignes de cuisson du pide */
   background-image:
-    radial-gradient(6px 4px at 30% 35%, #fbe8c8 98%, transparent),
-    radial-gradient(6px 4px at 55% 25%, #fbe8c8 98%, transparent),
-    radial-gradient(6px 4px at 70% 45%, #fbe8c8 98%, transparent),
-    radial-gradient(6px 4px at 42% 55%, #fbe8c8 98%, transparent),
-    radial-gradient(6px 4px at 62% 65%, #fbe8c8 98%, transparent),
-    radial-gradient(6px 4px at 28% 62%, #fbe8c8 98%, transparent);
+    radial-gradient(5px 3px at 26% 36%, #fdf0d2 98%, transparent),
+    radial-gradient(5px 3px at 48% 22%, #fdf0d2 98%, transparent),
+    radial-gradient(5px 3px at 68% 38%, #fdf0d2 98%, transparent),
+    radial-gradient(5px 3px at 38% 52%, #fdf0d2 98%, transparent),
+    radial-gradient(5px 3px at 60% 62%, #fdf0d2 98%, transparent),
+    radial-gradient(5px 3px at 78% 56%, #fdf0d2 98%, transparent),
+    radial-gradient(5px 3px at 22% 64%, #fdf0d2 98%, transparent),
+    repeating-linear-gradient(100deg, transparent 0 26px, rgba(120, 70, 25, .35) 26px 30px);
 }
 
 .slayer--sauce {
   background: radial-gradient(circle at 45% 40%, #fdf6e3, #f2e3bd 60%, #e4cf9b);
-  inset: 16%;
+  inset: 20% 8%;
   border-radius: 46% 54% 52% 48% / 50% 47% 53% 50%;
 }
 
-.slayer--onion { inset: 20%; box-shadow: none; background: transparent; }
+.slayer--onion { inset: 22% 12%; box-shadow: none; background: transparent; }
 .slayer--onion b {
   position: absolute;
   width: 42%; height: 42%;
@@ -512,7 +522,7 @@ a { color: inherit; }
 .slayer--onion b:nth-child(2) { top: 30%; right: 4%; width: 36%; height: 36%; }
 .slayer--onion b:nth-child(3) { bottom: 2%; left: 28%; width: 38%; height: 38%; }
 
-.slayer--tomato { inset: 18%; box-shadow: none; background: transparent; }
+.slayer--tomato { inset: 20% 10%; box-shadow: none; background: transparent; }
 .slayer--tomato b {
   position: absolute;
   width: 46%; height: 46%;
@@ -525,7 +535,7 @@ a { color: inherit; }
 .slayer--tomato b:nth-child(3) { bottom: 0; left: 26%; }
 
 .slayer--cabbage {
-  inset: 15%;
+  inset: 18% 7%;
   background:
     repeating-conic-gradient(from 20deg, #8a3fb8 0 14deg, #b06ad4 14deg 26deg, #6d2f96 26deg 40deg);
   border-radius: 43% 57% 49% 51% / 55% 44% 56% 45%;
@@ -533,13 +543,13 @@ a { color: inherit; }
 }
 
 .slayer--salad {
-  inset: 12%;
+  inset: 17% 5%;
   background:
     radial-gradient(circle at 30% 30%, #9ede56, #5cb52e 55%, #3f8c1e);
   border-radius: 58% 42% 55% 45% / 45% 60% 40% 55%;
 }
 
-.slayer--feta { inset: 22%; box-shadow: none; background: transparent; }
+.slayer--feta { inset: 24% 14%; box-shadow: none; background: transparent; }
 .slayer--feta b {
   position: absolute;
   width: 24%; height: 20%;
@@ -552,25 +562,39 @@ a { color: inherit; }
 .slayer--feta b:nth-child(3) { bottom: 14%; left: 24%; transform: rotate(8deg); }
 .slayer--feta b:nth-child(4) { bottom: 6%; right: 22%; transform: rotate(-22deg); }
 
-.slayer--meat {
-  inset: 14%;
-  background:
-    radial-gradient(circle at 40% 35%, #a4643a, #7c4526 60%, #5c2f16);
-  border-radius: 47% 53% 44% 56% / 52% 46% 54% 48%;
-  box-shadow: inset 0 -8px 18px rgba(0,0,0,.4), 0 18px 40px rgba(0, 0, 0, .45);
+/* Viande : copeaux de döner découpés à la broche, pas un steak haché */
+.slayer--meat { inset: 15% 6%; box-shadow: none; background: transparent; }
+.slayer--meat b {
+  position: absolute;
+  height: 26%;
+  border-radius: 45% 55% 50% 50% / 80% 70% 90% 75%;
+  background: linear-gradient(100deg, #b5734a, #8a4f2b 45%, #6b3819 80%);
+  box-shadow:
+    inset 0 4px 6px rgba(255, 200, 150, .35),
+    inset 0 -5px 8px rgba(40, 18, 5, .55),
+    0 10px 22px rgba(0, 0, 0, .4);
 }
-.slayer--meat::after {
+.slayer--meat b::after {
   content: "";
-  position: absolute; inset: 8% 10%;
+  position: absolute; inset: 12% 8%;
   border-radius: inherit;
-  background:
-    repeating-linear-gradient(35deg, transparent 0 14px, rgba(0,0,0,.22) 14px 18px);
-  opacity: .8;
+  background: repeating-linear-gradient(95deg, transparent 0 9px, rgba(45, 20, 5, .3) 9px 12px);
 }
+.slayer--meat b:nth-child(1) { width: 58%; top: 4%;  left: 4%;  transform: rotate(-9deg); }
+.slayer--meat b:nth-child(2) { width: 52%; top: 16%; right: 2%; transform: rotate(7deg); }
+.slayer--meat b:nth-child(3) { width: 62%; top: 38%; left: 12%; transform: rotate(-3deg); }
+.slayer--meat b:nth-child(4) { width: 50%; bottom: 14%; left: 2%;  transform: rotate(10deg); }
+.slayer--meat b:nth-child(5) { width: 54%; bottom: 2%;  right: 6%; transform: rotate(-12deg); }
 
 .slayer--bread-bot {
-  background: radial-gradient(circle at 45% 30%, #e8b269, #c98d45 60%, #a06630);
-  inset: 12%;
+  inset: 16% 3%;
+  border-radius: 50% 50% 48% 52% / 88% 92% 86% 90%;
+  background:
+    radial-gradient(ellipse 120% 90% at 45% 30%, #ecbd75, #cf9349 55%, #a56b31 85%, #7f5022);
+  box-shadow:
+    inset 0 -12px 20px rgba(80, 45, 12, .5),
+    inset 0 6px 12px rgba(255, 230, 180, .4),
+    0 18px 40px rgba(0, 0, 0, .35);
 }
 
 .doner__shadow {
