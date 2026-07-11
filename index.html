@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MEISTER — Berliner Kebap · Ivry-sur-Seine</title>
+  <meta name="description" content="MEISTER — Berliner Kebap à Ivry-sur-Seine. Kebap grillé, burgers maison, veggie. 86 Bd Paul Vaillant Couturier, 94200 Ivry-sur-Seine. Ouvert 7j/7 jusqu'à 2h-3h du matin.">
+  <meta name="theme-color" content="#0a0e11">
+  <meta property="og:title" content="MEISTER — Berliner Kebap · Ivry-sur-Seine">
+  <meta property="og:description" content="Kebap for life. Berliner Kebap, burgers maison & veggie à Ivry-sur-Seine. Ouvert 7j/7 jusqu'à 2h-3h.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥙</text></svg>">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Meister",
+    "servesCuisine": ["Kebab", "Berliner Kebap", "Burgers"],
+    "telephone": "+33773435405",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "86 Bd Paul Vaillant Couturier",
+      "postalCode": "94200",
+      "addressLocality": "Ivry-sur-Seine",
+      "addressCountry": "FR"
+    },
+    "openingHoursSpecification": [
+      {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"11:30","closes":"02:00"},
+      {"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"11:30","closes":"03:00"},
+      {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"12:00","closes":"02:00"}
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#accueil">
+      <span class="nav__logo">MEISTER</span>
+      <span class="nav__sub">Berliner Kebap</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#accueil">Accueil</a>
+      <a href="#doner">Le Döner</a>
+      <a href="#menu">Menu</a>
+      <a href="#contact">Contact</a>
+      <a class="nav__cta" href="tel:+33773435405">📞 07 73 43 54 05</a>
+    </nav>
+    <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="accueil">
+    <div class="hero__bg">
+      <div class="hero__glow hero__glow--cyan"></div>
+      <div class="hero__glow hero__glow--pink"></div>
+      <div class="hero__glow hero__glow--yellow"></div>
+      <div class="hero__grid"></div>
+      <div class="hero__noise"></div>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__kicker reveal"><span class="neon-script">Kebap for life</span></p>
+      <h1 class="hero__title" aria-label="MEISTER">
+        <span class="hero__letter">M</span><span class="hero__letter">E</span><span class="hero__letter">I</span><span class="hero__letter">S</span><span class="hero__letter">T</span><span class="hero__letter">E</span><span class="hero__letter">R</span>
+      </h1>
+      <p class="hero__tag reveal">BERLINER&nbsp;KEBAP&nbsp;·&nbsp;IVRY-SUR-SEINE</p>
+      <p class="hero__status reveal"><span class="status-dot" id="statusDot"></span><span id="statusText">Horaires</span></p>
+      <div class="hero__actions reveal">
+        <a class="btn btn--primary" href="#menu">Voir le menu</a>
+        <a class="btn btn--ghost" href="tel:+33773435405">Appeler</a>
+      </div>
+    </div>
+
+    <a class="hero__scroll" href="#doner" aria-label="Défiler vers le bas">
+      <span class="hero__mouse"></span>
+      <span class="hero__scroll-txt">Scroll</span>
+    </a>
+  </section>
+
+  <!-- ===== TICKER ===== -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span>KEBAP FOR LIFE ✦ BERLINER KEBAP ✦ MEISTER ✦ IVRY-SUR-SEINE ✦ OUVERT JUSQU'À 3H ✦ BURGER MAISON ✦ VEGGIE ✦&nbsp;</span>
+      <span>KEBAP FOR LIFE ✦ BERLINER KEBAP ✦ MEISTER ✦ IVRY-SUR-SEINE ✦ OUVERT JUSQU'À 3H ✦ BURGER MAISON ✦ VEGGIE ✦&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ===== DÖNER 3D ===== -->
+  <section class="doner" id="doner">
+    <div class="doner__sticky">
+      <div class="doner__head">
+        <h2 class="section-title">L'anatomie du <span class="accent-script">Meister</span></h2>
+        <p class="doner__hint" id="donerHint">Scrollez pour décomposer le döner ↓</p>
+      </div>
+
+      <div class="doner__layout">
+        <div class="doner__scene" id="donerScene">
+          <div class="doner__stack" id="donerStack">
+            <div class="slayer slayer--bread-top"  data-label="Pain grillé au sésame"><i></i></div>
+            <div class="slayer slayer--sauce"      data-label="Sauce Meister"></div>
+            <div class="slayer slayer--onion"      data-label="Oignons rouges"><b></b><b></b><b></b></div>
+            <div class="slayer slayer--tomato"     data-label="Tomates fraîches"><b></b><b></b><b></b></div>
+            <div class="slayer slayer--cabbage"    data-label="Chou rouge & grenade"></div>
+            <div class="slayer slayer--salad"      data-label="Salade croquante"></div>
+            <div class="slayer slayer--feta"       data-label="Feta émiettée"><b></b><b></b><b></b><b></b></div>
+            <div class="slayer slayer--meat"       data-label="Kebap grillé à la flamme"></div>
+            <div class="slayer slayer--bread-bot"  data-label="Pain croustillant"></div>
+            <div class="doner__shadow"></div>
+          </div>
+        </div>
+
+        <ul class="doner__ingredients" id="donerIngredients">
+          <li>Pain grillé au sésame</li>
+          <li>Sauce Meister</li>
+          <li>Oignons rouges</li>
+          <li>Tomates fraîches</li>
+          <li>Chou rouge &amp; grenade</li>
+          <li>Salade croquante</li>
+          <li>Feta émiettée</li>
+          <li>Kebap grillé à la flamme</li>
+          <li>Pain croustillant</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MENU ===== -->
+  <section class="menu" id="menu">
+    <div class="menu__head">
+      <h2 class="section-title">Le <span class="accent-script">Menu</span></h2>
+      <p class="menu__sub">Tout est préparé à la minute, comme à Berlin.</p>
+    </div>
+
+    <!-- Berliner Kebap -->
+    <div class="menu-block menu-block--teal reveal">
+      <div class="menu-block__header">
+        <h3>BERLINER <span class="menu-block__script menu-block__script--white">Kebap</span></h3>
+      </div>
+      <div class="menu-block__grid">
+        <article class="dish">
+          <h4>Original</h4>
+          <p>Kebap grillé, salade, tomates, oignons rouges, chou, sauce Meister, cocktail &amp; piquante</p>
+        </article>
+        <article class="dish">
+          <h4>Meister</h4>
+          <p>Kebap grillé, salade, légumes grillés, chou rouge, fromage feta, grenade, sauce Meister &amp; sauce sésame</p>
+        </article>
+        <article class="dish">
+          <h4>Käser</h4>
+          <p>Kebap grillé, salade, tomates séchées confites, fromage de chèvre, miel, sauce moutarde-miel, oignons frits</p>
+        </article>
+        <article class="dish">
+          <h4>Clasicōs</h4>
+          <p>Kebap grillé, salade, poivrons grillés, fromage cheddar, jalapeños, sauce piquante</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Veggie -->
+    <div class="menu-block menu-block--teal reveal">
+      <div class="menu-block__header">
+        <h3>MEISTER <span class="menu-block__script menu-block__script--yellow">Veggie</span></h3>
+      </div>
+      <div class="menu-block__grid">
+        <article class="dish">
+          <h4>Falafel</h4>
+          <p>Falafel, salade, légumes grillés, fromage feta, chou rouge, grenade, sauce Meister &amp; sauce sésame</p>
+        </article>
+        <article class="dish">
+          <h4>Veggie Burger</h4>
+          <p>Viande végétale, salade, fromage cheddar, tomates, oignons frits, sauce Meister &amp; ketchup</p>
+        </article>
+        <article class="dish">
+          <h4>Vegetar'sh</h4>
+          <p>Falafel, salade, chou rouge, légumes grillés, grenade, fromage feta, sauce Meister</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Burger Maison -->
+    <div class="menu-block menu-block--dark reveal">
+      <div class="menu-block__header">
+        <h3 class="menu-block__badge">BURGER <span class="menu-block__script menu-block__script--dark">Maison</span></h3>
+        <p class="menu-block__choice">Protéine au choix — <strong>Steak smashed 150&nbsp;g</strong> ou <strong>Poulet pané maison</strong></p>
+      </div>
+      <div class="menu-block__grid">
+        <article class="dish dish--dark">
+          <h4>Rustico</h4>
+          <p>Emmental, tomates, pickles, oignons rouges, sauce maison</p>
+        </article>
+        <article class="dish dish--dark">
+          <h4>Klassiker</h4>
+          <p>Cheddar, pickles, oignons rouges, ketchup, moutarde américaine</p>
+        </article>
+        <article class="dish dish--dark">
+          <h4>Bacon</h4>
+          <p>Bacon de bœuf, cheddar, oignons, sauce barbecue</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Mini box & sides -->
+    <div class="menu-block menu-block--dark reveal">
+      <div class="menu-block__header">
+        <h3 class="menu-block__badge">MINI <span class="menu-block__script menu-block__script--dark">Box</span> &amp; à côtés</h3>
+      </div>
+      <div class="menu-block__grid menu-block__grid--4">
+        <article class="dish dish--dark dish--cat">
+          <span class="dish__emoji">🍟</span>
+          <h4>Sides</h4>
+          <p>Frites maison &amp; accompagnements</p>
+        </article>
+        <article class="dish dish--dark dish--cat">
+          <span class="dish__emoji">🧀</span>
+          <h4>Croquettes</h4>
+          <p>Croustillantes, à partager</p>
+        </article>
+        <article class="dish dish--dark dish--cat">
+          <span class="dish__emoji">🍰</span>
+          <h4>Desserts</h4>
+          <p>La touche sucrée</p>
+        </article>
+        <article class="dish dish--dark dish--cat">
+          <span class="dish__emoji">🥤</span>
+          <h4>Boissons</h4>
+          <p>Sodas &amp; boissons fraîches</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="contact" id="contact">
+    <div class="contact__head">
+      <h2 class="section-title">On vous <span class="accent-script">attend</span></h2>
+      <p class="menu__sub">Sur place ou à emporter — jusqu'à 2h du matin (3h le week-end).</p>
+    </div>
+
+    <div class="contact__grid">
+      <div class="contact__card reveal">
+        <h3>📍 Adresse</h3>
+        <p>86 Bd Paul Vaillant Couturier<br>94200 Ivry-sur-Seine</p>
+        <a class="btn btn--primary btn--small" href="https://maps.google.com/maps/place//data=!4m2!3m1!1s0x47e6734f267d02c7:0x2af38bc3ca994b24" target="_blank" rel="noopener">Itinéraire</a>
+        <img class="contact__photo" src="assets/photos/devanture.jpeg" alt="Devanture du restaurant Meister de nuit, enseignes néon" loading="lazy">
+      </div>
+
+      <div class="contact__card reveal">
+        <h3>📞 Contact</h3>
+        <p>Une question, une grosse commande&nbsp;?<br>Appelez-nous directement&nbsp;:</p>
+        <a class="contact__phone" href="tel:+33773435405">07 73 43 54 05</a>
+        <a class="btn btn--ghost btn--small" href="sms:+33773435405">Envoyer un SMS</a>
+      </div>
+
+      <div class="contact__card reveal">
+        <h3>🕐 Horaires</h3>
+        <table class="hours" id="hoursTable">
+          <tr data-day="1"><td>Lundi</td><td>11:30 – 02:00</td></tr>
+          <tr data-day="2"><td>Mardi</td><td>11:30 – 02:00</td></tr>
+          <tr data-day="3"><td>Mercredi</td><td>11:30 – 02:00</td></tr>
+          <tr data-day="4"><td>Jeudi</td><td>11:30 – 02:00</td></tr>
+          <tr data-day="5"><td>Vendredi</td><td>11:30 – 03:00</td></tr>
+          <tr data-day="6"><td>Samedi</td><td>11:30 – 03:00</td></tr>
+          <tr data-day="0"><td>Dimanche</td><td>12:00 – 02:00</td></tr>
+        </table>
+        <p class="hours__note">Horaires pouvant varier les jours fériés.</p>
+      </div>
+    </div>
+
+    <div class="contact__map reveal">
+      <iframe
+        title="Carte — Meister, 86 Bd Paul Vaillant Couturier, Ivry-sur-Seine"
+        src="https://maps.google.com/maps?q=Meister%20kebab%2C%2086%20Bd%20Paul%20Vaillant%20Couturier%2C%2094200%20Ivry-sur-Seine&z=16&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p class="footer__logo">MEISTER</p>
+    <p class="footer__script neon-script">Kebap for life</p>
+    <p class="footer__info">86 Bd Paul Vaillant Couturier, 94200 Ivry-sur-Seine · <a href="tel:+33773435405">07 73 43 54 05</a></p>
+    <p class="footer__copy">© <span id="year"></span> Meister — Berliner Kebap</p>
+  </footer>
+
+  <!-- Bouton d'appel flottant (mobile) -->
+  <a class="fab-call" href="tel:+33773435405" aria-label="Appeler Meister">📞</a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
