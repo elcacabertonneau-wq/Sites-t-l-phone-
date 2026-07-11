@@ -48,7 +48,7 @@
       <a href="#doner">Le Döner</a>
       <a href="#menu">Menu</a>
       <a href="#contact">Contact</a>
-      <a class="nav__cta" href="tel:+33773435405">📞 07 73 43 54 05</a>
+      <a class="nav__cta" href="tel:+33773435405">07 73 43 54 05</a>
     </nav>
     <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -78,8 +78,13 @@
       </div>
     </div>
 
+    <div class="hero__foot" aria-hidden="true">
+      <span>86 Bd Paul Vaillant Couturier</span>
+      <span>94200 Ivry-sur-Seine</span>
+    </div>
+
     <a class="hero__scroll" href="#doner" aria-label="Défiler vers le bas">
-      <span class="hero__mouse"></span>
+      <span class="hero__scroll-line"></span>
       <span class="hero__scroll-txt">Scroll</span>
     </a>
   </section>
@@ -91,17 +96,25 @@
       <span>KEBAP FOR LIFE ✦ BERLINER KEBAP ✦ MEISTER ✦ IVRY-SUR-SEINE ✦ OUVERT JUSQU'À 3H ✦ BURGER MAISON ✦ VEGGIE ✦&nbsp;</span>
     </div>
   </div>
+  <div class="ticker ticker--reverse" aria-hidden="true">
+    <div class="ticker__track">
+      <span>SUR PLACE OU À EMPORTER ✦ WRAP OU PITA ✦ SAUCE MEISTER ✦ PRÉPARÉ À LA MINUTE ✦ 07 73 43 54 05 ✦&nbsp;</span>
+      <span>SUR PLACE OU À EMPORTER ✦ WRAP OU PITA ✦ SAUCE MEISTER ✦ PRÉPARÉ À LA MINUTE ✦ 07 73 43 54 05 ✦&nbsp;</span>
+    </div>
+  </div>
 
   <!-- ===== DÖNER 3D ===== -->
   <section class="doner" id="doner">
     <div class="doner__sticky">
       <div class="doner__head">
+        <p class="section-kicker">01 — La spécialité</p>
         <h2 class="section-title">L'anatomie du <span class="accent-script">Döner</span></h2>
         <p class="doner__hint" id="donerHint">Scrollez pour décomposer le kebap ↓</p>
       </div>
 
       <div class="doner__layout">
         <div class="doner__scene" id="donerScene">
+          <span class="doner__ghost" aria-hidden="true">DÖNER</span>
           <div class="doner__stack" id="donerStack">
             <div class="slayer slayer--bread-top"  data-label="Pain pita grillé au sésame"><i></i></div>
             <div class="slayer slayer--sauce"      data-label="Sauce Meister"></div>
@@ -134,6 +147,7 @@
   <!-- ===== MENU ===== -->
   <section class="menu" id="menu">
     <div class="menu__head">
+      <p class="section-kicker">02 — La carte</p>
       <h2 class="section-title">Le <span class="accent-script">Menu</span></h2>
       <p class="menu__sub">Tout est préparé à la minute, comme à Berlin.</p>
     </div>
@@ -244,11 +258,11 @@
     <div class="menu-block menu-block--dark reveal">
       <div class="menu-block__grid">
         <article class="dish dish--dark">
-          <h4><span class="dish__emoji-inline">🥣</span> Mini Bowl</h4>
+          <h4>Mini Bowl</h4>
           <p>Kebap grillé, salade du berger, frites, sauce Meister <strong>+ boisson 33&nbsp;cl</strong></p>
         </article>
         <article class="dish dish--dark">
-          <h4><span class="dish__emoji-inline">🍗</span> Nos Sides</h4>
+          <h4>Nos Sides</h4>
           <ul class="dish__list">
             <li>Tenders <span>x3</span></li>
             <li>Nuggets <span>x4</span></li>
@@ -258,7 +272,7 @@
           </ul>
         </article>
         <article class="dish dish--dark">
-          <h4><span class="dish__emoji-inline">🍟</span> Nos Barquettes</h4>
+          <h4>Nos Barquettes</h4>
           <p class="dish__sub">Viande kebap ou boulgour</p>
           <ul class="dish__list">
             <li>Frites</li>
@@ -268,20 +282,20 @@
           <p class="dish__note">Avec menu&nbsp;: Frites cheddar / Frites cheddar bacon</p>
         </article>
         <article class="dish dish--dark">
-          <h4><span class="dish__emoji-inline">🍰</span> Nos Desserts</h4>
+          <h4>Nos Desserts</h4>
           <ul class="dish__list">
             <li>Cheesecake</li>
             <li>Tiramisu</li>
           </ul>
         </article>
         <article class="dish dish--dark">
-          <h4><span class="dish__emoji-inline">🥤</span> Nos Boissons</h4>
+          <h4>Nos Boissons</h4>
           <ul class="dish__list">
             <li>Boisson 33&nbsp;cl</li>
           </ul>
         </article>
         <article class="dish dish--dark">
-          <h4><span class="dish__emoji-inline">🧒</span> Menu Enfant</h4>
+          <h4>Menu Enfant</h4>
           <p>Burger <em>ou</em> nuggets (x4) <em>ou</em> mini wrap (kebap grillé) + frites + Capri-Sun</p>
         </article>
       </div>
@@ -291,27 +305,31 @@
   <!-- ===== CONTACT ===== -->
   <section class="contact" id="contact">
     <div class="contact__head">
+      <p class="section-kicker">03 — Nous trouver</p>
       <h2 class="section-title">On vous <span class="accent-script">attend</span></h2>
       <p class="menu__sub">Sur place ou à emporter — jusqu'à 2h du matin (3h le week-end).</p>
     </div>
 
     <div class="contact__grid">
       <div class="contact__card reveal">
-        <h3>📍 Adresse</h3>
+        <h3>Adresse</h3>
         <p>86 Bd Paul Vaillant Couturier<br>94200 Ivry-sur-Seine</p>
         <a class="btn btn--primary btn--small" href="https://maps.google.com/maps/place//data=!4m2!3m1!1s0x47e6734f267d02c7:0x2af38bc3ca994b24" target="_blank" rel="noopener">Itinéraire</a>
-        <img class="contact__photo" src="assets/photos/devanture.jpeg" alt="Devanture du restaurant Meister de nuit, enseignes néon" loading="lazy">
+        <figure class="polaroid">
+          <img class="contact__photo" src="assets/photos/devanture.jpeg" alt="Devanture du restaurant Meister de nuit, enseignes néon" loading="lazy">
+          <figcaption>La devanture, la nuit</figcaption>
+        </figure>
       </div>
 
       <div class="contact__card reveal">
-        <h3>📞 Contact</h3>
+        <h3>Contact</h3>
         <p>Une question, une grosse commande&nbsp;?<br>Appelez-nous directement&nbsp;:</p>
         <a class="contact__phone" href="tel:+33773435405">07 73 43 54 05</a>
         <a class="btn btn--ghost btn--small" href="sms:+33773435405">Envoyer un SMS</a>
       </div>
 
       <div class="contact__card reveal">
-        <h3>🕐 Horaires</h3>
+        <h3>Horaires</h3>
         <table class="hours" id="hoursTable">
           <tr data-day="1"><td>Lundi</td><td>11:30 – 02:00</td></tr>
           <tr data-day="2"><td>Mardi</td><td>11:30 – 02:00</td></tr>
@@ -342,7 +360,7 @@
   </footer>
 
   <!-- Bouton d'appel flottant (mobile) -->
-  <a class="fab-call" href="tel:+33773435405" aria-label="Appeler Meister">📞</a>
+  <a class="fab-call" href="tel:+33773435405" aria-label="Appeler Meister"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#14100a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.78.66 2.62a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.46-1.23a2 2 0 0 1 2.11-.45c.84.32 1.72.54 2.62.66A2 2 0 0 1 22 16.92z"/></svg></a>
 
   <script src="js/main.js"></script>
 </body>

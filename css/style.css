@@ -999,3 +999,237 @@ html:not(.js) .doner__ingredients li { opacity: .85; color: var(--white); }
   .doner { height: auto; }
   .doner__sticky { position: static; height: auto; padding-bottom: 3rem; }
 }
+
+/* ============================================================
+   FINITIONS — pleine largeur, textures & détails faits main
+   ============================================================ */
+
+/* grain de film sur toute la page */
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  opacity: .38;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* kickers de sections */
+.section-kicker {
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: .8rem;
+}
+.section-kicker::after {
+  content: "";
+  display: inline-block;
+  width: 42px; height: 2px;
+  background: var(--yellow);
+  margin-left: .8rem;
+  vertical-align: middle;
+  rotate: -2deg;
+}
+
+/* pleine largeur */
+.menu, .contact { max-width: 1400px; }
+.doner__layout { max-width: 1280px; }
+.menu__head, .contact__head { text-align: left; margin-bottom: clamp(2rem, 5vw, 3.2rem); }
+.contact { padding-bottom: clamp(2.5rem, 6vw, 4rem); }
+
+/* néon : aberration chromatique + lettres posées à la main */
+.hero__letter {
+  text-shadow:
+    0 0 10px rgba(62, 230, 240, .5),
+    0 0 34px rgba(62, 230, 240, .3),
+    -5px 2px 0 rgba(255, 79, 216, .2),
+    5px -2px 0 rgba(62, 230, 240, .26),
+    0 6px 30px rgba(0, 0, 0, .6);
+}
+.hero__letter:nth-child(1) { rotate: -1.4deg; translate: 0 2px; }
+.hero__letter:nth-child(2) { rotate: .9deg; }
+.hero__letter:nth-child(3) { rotate: -.6deg; translate: 0 -2px; }
+.hero__letter:nth-child(4) { rotate: 1.2deg; translate: 0 1px; }
+.hero__letter:nth-child(5) { rotate: -1deg; }
+.hero__letter:nth-child(6) { rotate: .7deg; translate: 0 -1px; }
+.hero__letter:nth-child(7) { rotate: -1.6deg; translate: 0 2px; }
+
+/* adresse en pied de hero, façon affiche */
+.hero__foot {
+  position: absolute;
+  bottom: 1.5rem; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 clamp(1rem, 3vw, 2.4rem);
+  font-size: .66rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: rgba(157, 180, 186, .65);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* indicateur de scroll : fil + point lumineux */
+.hero__scroll-line {
+  width: 1px; height: 46px;
+  background: linear-gradient(rgba(62, 230, 240, .7), transparent);
+  position: relative;
+}
+.hero__scroll-line::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -2px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  animation: scroll-dot 1.8s ease-in-out infinite;
+}
+@keyframes scroll-dot {
+  0%   { transform: translateY(0); opacity: 1; }
+  80%  { transform: translateY(40px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+/* boutons façon stickers, un peu de travers */
+.btn { border-radius: 12px; }
+.btn--primary { rotate: -1.2deg; }
+.btn--ghost { rotate: .8deg; }
+.nav__cta { border-radius: 9px; rotate: -1.5deg; }
+
+/* deuxième ticker croisé */
+.ticker--reverse {
+  background: var(--teal);
+  transform: rotate(1.1deg) scale(1.02);
+  margin-top: -5px;
+  box-shadow: 0 0 40px rgba(23, 133, 140, .3);
+}
+.ticker--reverse .ticker__track { animation-direction: reverse; animation-duration: 27s; }
+.ticker--reverse .ticker__track span { color: var(--white); }
+
+/* mot fantôme derrière la scène 3D */
+.doner__scene { position: relative; }
+.doner__ghost {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 19vw, 14rem);
+  letter-spacing: .04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(244, 247, 248, .06);
+  pointer-events: none;
+  user-select: none;
+  rotate: -4deg;
+}
+
+/* ingrédients numérotés à la main */
+.doner__ingredients { counter-reset: ing; }
+.doner__ingredients li::before {
+  counter-increment: ing;
+  content: counter(ing, decimal-leading-zero) "  ";
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: .72em;
+  letter-spacing: .05em;
+}
+
+/* blocs de menu légèrement de travers, cartes irrégulières */
+.menu .menu-block:nth-of-type(even) { rotate: -.4deg; }
+.menu .menu-block:nth-of-type(odd)  { rotate: .3deg; }
+.menu-block__grid .dish:nth-child(4n+1) { rotate: -.4deg; }
+.menu-block__grid .dish:nth-child(4n+3) { rotate: .5deg; }
+.menu-block__grid .dish:nth-child(3n)   { translate: 0 4px; }
+
+/* scotch sur les badges jaunes */
+.menu-block__badge::before {
+  content: "";
+  position: absolute;
+  top: -9px; left: -18px;
+  width: 58px; height: 18px;
+  background: rgba(244, 247, 248, .22);
+  border: 1px solid rgba(255, 255, 255, .12);
+  transform: rotate(-32deg);
+}
+
+/* marqueur des titres de cartes contact */
+.contact__card h3::before {
+  content: "";
+  display: inline-block;
+  width: 9px; height: 9px;
+  background: var(--yellow);
+  margin-right: .65rem;
+  rotate: 45deg;
+  box-shadow: 0 0 10px rgba(249, 201, 60, .5);
+}
+
+/* photo devanture en polaroid scotché */
+.polaroid {
+  position: relative;
+  background: #f4f1e8;
+  padding: 9px 9px 6px;
+  rotate: -1.6deg;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .45);
+  width: 100%;
+  margin-top: .3rem;
+}
+.polaroid img { border-radius: 2px; }
+.polaroid figcaption {
+  font-family: var(--font-script);
+  color: #2a2620;
+  font-size: 1.1rem;
+  text-align: center;
+  padding-top: .4rem;
+}
+.polaroid::before {
+  content: "";
+  position: absolute;
+  top: -11px; left: 50%;
+  translate: -50% 0;
+  width: 92px; height: 22px;
+  background: rgba(244, 247, 248, .3);
+  border: 1px solid rgba(255, 255, 255, .16);
+  rotate: -3deg;
+}
+
+/* numéro de téléphone géant */
+.contact__phone { font-size: clamp(2rem, 6.5vw, 3rem); }
+
+/* carte Google en pleine largeur d'écran */
+.contact__map {
+  margin-inline: calc(50% - 50vw);
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+}
+.contact__map iframe { height: clamp(300px, 42vw, 480px); }
+
+/* footer : wordmark géant détouré */
+.footer__logo {
+  font-size: clamp(3.2rem, 13vw, 8.5rem);
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(244, 247, 248, .3);
+  letter-spacing: .14em;
+  line-height: 1;
+  text-shadow: none;
+}
+
+/* bouton d'appel : icône centrée + zone sûre iOS */
+.fab-call { bottom: calc(1.1rem + env(safe-area-inset-bottom)); }
+.fab-call svg { display: block; }
+
+/* perfs mobile : halos plus légers */
+@media (max-width: 760px) {
+  .hero__glow { filter: blur(55px); opacity: .16; }
+  .hero__foot { display: none; }
+}
+
+/* petits écrans en hauteur : on libère le hero */
+@media (max-height: 620px) {
+  .hero__scroll, .hero__foot { display: none; }
+}
+
+/* resserrer l'espace entre le menu et le contact */
+.contact { padding-top: clamp(2rem, 4vw, 3.5rem); }
+.menu { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
