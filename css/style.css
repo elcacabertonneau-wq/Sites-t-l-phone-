@@ -1176,18 +1176,222 @@ body::after {
   .doner__ingredients input[type="checkbox"] { width: 14px; height: 14px; }
 }
 
-/* sans JS : les cases pilotent les couches en pur CSS */
-html:not(.js) .slayer { transition: opacity .45s ease, visibility .45s; }
-html:not(.js) .doner:has(input[value="pain"]:not(:checked))    :is(.slayer--bread-top, .slayer--bread-bot),
-html:not(.js) .doner:has(input[value="sauce"]:not(:checked))   .slayer--sauce,
-html:not(.js) .doner:has(input[value="oignons"]:not(:checked)) .slayer--onion,
-html:not(.js) .doner:has(input[value="tomates"]:not(:checked)) .slayer--tomato,
-html:not(.js) .doner:has(input[value="chou"]:not(:checked))    .slayer--cabbage,
-html:not(.js) .doner:has(input[value="salade"]:not(:checked))  .slayer--salad,
-html:not(.js) .doner:has(input[value="feta"]:not(:checked))    .slayer--feta,
-html:not(.js) .doner:has(input[value="kebap"]:not(:checked))   .slayer--meat {
-  opacity: 0;
-  visibility: hidden;
+/* ============================================================
+   VISUALISEUR DE LA CARTE — 16 plats
+   ============================================================ */
+
+/* sélecteur de plats */
+.doner__dishes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem .45rem;
+  margin-top: .9rem;
 }
-html:not(.js) .doner__ingredients li:has(input:not(:checked)) { opacity: .38; }
-html:not(.js) .doner__ingredients li:has(input:not(:checked)) span { text-decoration: line-through; }
+.doner__cat {
+  font-family: var(--font-display);
+  font-size: .78rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin: 0 .2rem 0 1rem;
+  opacity: .85;
+}
+.doner__cat:first-child { margin-left: 0; }
+.dish-chip { position: relative; }
+.dish-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.dish-chip span {
+  display: inline-block;
+  padding: .3rem .8rem;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease, background .2s ease, rotate .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.dish-chip span:hover { color: var(--cyan); border-color: rgba(62, 230, 240, .5); }
+.dish-chip input:checked + span {
+  background: var(--yellow);
+  color: #14100a;
+  border-color: var(--yellow);
+  box-shadow: 0 0 14px rgba(249, 201, 60, .4);
+  rotate: -1.2deg;
+}
+.dish-chip input:focus-visible + span { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .doner__dishes {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0 1rem .45rem;
+    margin-inline: -1.25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .doner__dishes::-webkit-scrollbar { display: none; }
+  .doner__cat, .dish-chip span { white-space: nowrap; }
+  .doner__scene { height: min(40svh, 360px); }
+}
+
+/* un seul plat visible à la fois (piloté par les radios, sans JS nécessaire) */
+.doner__stack[data-dish] { display: none; }
+.doner__ingredients[data-dish] { display: none; }
+.doner__side { min-width: 0; }
+
+html:not(.js) .doner:has(.doner__ingredients[data-dish="original"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="original"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="original"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="original"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="original"] input[value="oignons"]:not(:checked)) .doner__stack[data-dish="original"] .sl-oignons { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="original"] input[value="tomate"]:not(:checked)) .doner__stack[data-dish="original"] .sl-tomate { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="original"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="original"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="original"] input[value="kebap"]:not(:checked)) .doner__stack[data-dish="original"] .sl-kebap { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="original"]:checked) .doner__stack[data-dish="original"] { display: block; }
+.doner:has(input[name="dish"][value="original"]:checked) .doner__ingredients[data-dish="original"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="chou"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-chou { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="feta"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-feta { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="legumes"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-legumes { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="meister"] input[value="kebap"]:not(:checked)) .doner__stack[data-dish="meister"] .sl-kebap { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="meister"]:checked) .doner__stack[data-dish="meister"] { display: block; }
+.doner:has(input[name="dish"][value="meister"]:checked) .doner__ingredients[data-dish="meister"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="miel"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-miel { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="chevre"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-chevre { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="oigfrits"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-oigfrits { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="tomates"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-tomates { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="kaser"] input[value="kebap"]:not(:checked)) .doner__stack[data-dish="kaser"] .sl-kebap { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="kaser"]:checked) .doner__stack[data-dish="kaser"] { display: block; }
+.doner:has(input[name="dish"][value="kaser"]:checked) .doner__ingredients[data-dish="kaser"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="jalapenos"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-jalapenos { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="cheddar"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-cheddar { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="avocat"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-avocat { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="poivrons"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-poivrons { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="clasicas"] input[value="kebap"]:not(:checked)) .doner__stack[data-dish="clasicas"] .sl-kebap { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="clasicas"]:checked) .doner__stack[data-dish="clasicas"] { display: block; }
+.doner:has(input[name="dish"][value="clasicas"]:checked) .doner__ingredients[data-dish="clasicas"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="balsam"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-balsam { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="burrata"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-burrata { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="tomates"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-tomates { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="burrata"] input[value="kebap"]:not(:checked)) .doner__stack[data-dish="burrata"] .sl-kebap { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="burrata"]:checked) .doner__stack[data-dish="burrata"] { display: block; }
+.doner:has(input[name="dish"][value="burrata"]:checked) .doner__ingredients[data-dish="burrata"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="onionrings"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-onionrings { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="pickles"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-pickles { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="tomate"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-tomate { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="emmental"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-emmental { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="rustico"] input[value="steak"]:not(:checked)) .doner__stack[data-dish="rustico"] .sl-steak { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="rustico"]:checked) .doner__stack[data-dish="rustico"] { display: block; }
+.doner:has(input[name="dish"][value="rustico"]:checked) .doner__ingredients[data-dish="rustico"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="classiker"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="classiker"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="classiker"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="classiker"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="classiker"] input[value="oignons"]:not(:checked)) .doner__stack[data-dish="classiker"] .sl-oignons { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="classiker"] input[value="pickles"]:not(:checked)) .doner__stack[data-dish="classiker"] .sl-pickles { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="classiker"] input[value="cheddar"]:not(:checked)) .doner__stack[data-dish="classiker"] .sl-cheddar { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="classiker"] input[value="steak"]:not(:checked)) .doner__stack[data-dish="classiker"] .sl-steak { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="classiker"]:checked) .doner__stack[data-dish="classiker"] { display: block; }
+.doner:has(input[name="dish"][value="classiker"]:checked) .doner__ingredients[data-dish="classiker"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="chene"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-chene { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="cheddar"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-cheddar { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="baconl"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-baconl { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="oignons"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-oignons { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="bacon"] input[value="steak"]:not(:checked)) .doner__stack[data-dish="bacon"] .sl-steak { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="bacon"]:checked) .doner__stack[data-dish="bacon"] { display: block; }
+.doner:has(input[name="dish"][value="bacon"]:checked) .doner__ingredients[data-dish="bacon"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-b"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="caesar-b"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-b"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="caesar-b"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-b"] input[value="tomate"]:not(:checked)) .doner__stack[data-dish="caesar-b"] .sl-tomate { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-b"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="caesar-b"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-b"] input[value="cheddar"]:not(:checked)) .doner__stack[data-dish="caesar-b"] .sl-cheddar { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-b"] input[value="steak"]:not(:checked)) .doner__stack[data-dish="caesar-b"] .sl-steak { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="caesar-b"]:checked) .doner__stack[data-dish="caesar-b"] { display: block; }
+.doner:has(input[name="dish"][value="caesar-b"]:checked) .doner__ingredients[data-dish="caesar-b"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="jalapenos"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-jalapenos { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="chene"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-chene { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="cheddar"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-cheddar { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="poivrons"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-poivrons { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="tomates"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-tomates { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="avocat"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-avocat { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="fajita"] input[value="steak"]:not(:checked)) .doner__stack[data-dish="fajita"] .sl-steak { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="fajita"]:checked) .doner__stack[data-dish="fajita"] { display: block; }
+.doner:has(input[name="dish"][value="fajita"]:checked) .doner__ingredients[data-dish="fajita"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="chevre"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="chevre"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="chevre"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="chevre"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="chevre"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="chevre"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="chevre"] input[value="chevrel"]:not(:checked)) .doner__stack[data-dish="chevre"] .sl-chevrel { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="chevre"] input[value="miel"]:not(:checked)) .doner__stack[data-dish="chevre"] .sl-miel { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="chevre"] input[value="steak"]:not(:checked)) .doner__stack[data-dish="chevre"] .sl-steak { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="chevre"]:checked) .doner__stack[data-dish="chevre"] { display: block; }
+.doner:has(input[name="dish"][value="chevre"]:checked) .doner__ingredients[data-dish="chevre"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="chou"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-chou { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="feta"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-feta { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="legumes"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-legumes { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="falafel"] input[value="falafell"]:not(:checked)) .doner__stack[data-dish="falafel"] .sl-falafell { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="falafel"]:checked) .doner__stack[data-dish="falafel"] { display: block; }
+.doner:has(input[name="dish"][value="falafel"]:checked) .doner__ingredients[data-dish="falafel"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="oigfrits"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-oigfrits { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="tomate"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-tomate { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="cheddar"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-cheddar { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="veggie-burger"] input[value="vege"]:not(:checked)) .doner__stack[data-dish="veggie-burger"] .sl-vege { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="veggie-burger"]:checked) .doner__stack[data-dish="veggie-burger"] { display: block; }
+.doner:has(input[name="dish"][value="veggie-burger"]:checked) .doner__ingredients[data-dish="veggie-burger"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="pain"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-pain { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="feta"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-feta { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="frites"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-frites { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="chou"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-chou { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="legumes"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-legumes { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="salade"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-salade { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="boulgour"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-boulgour { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="vegetarish"] input[value="falafell"]:not(:checked)) .doner__stack[data-dish="vegetarish"] .sl-falafell { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="vegetarish"]:checked) .doner__stack[data-dish="vegetarish"] { display: block; }
+.doner:has(input[name="dish"][value="vegetarish"]:checked) .doner__ingredients[data-dish="vegetarish"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-s"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="caesar-s"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-s"] input[value="croutons"]:not(:checked)) .doner__stack[data-dish="caesar-s"] .sl-croutons { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-s"] input[value="parmesan"]:not(:checked)) .doner__stack[data-dish="caesar-s"] .sl-parmesan { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-s"] input[value="tomates"]:not(:checked)) .doner__stack[data-dish="caesar-s"] .sl-tomates { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-s"] input[value="poulet"]:not(:checked)) .doner__stack[data-dish="caesar-s"] .sl-poulet { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="caesar-s"] input[value="laitue"]:not(:checked)) .doner__stack[data-dish="caesar-s"] .sl-laitue { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="caesar-s"]:checked) .doner__stack[data-dish="caesar-s"] { display: block; }
+.doner:has(input[name="dish"][value="caesar-s"]:checked) .doner__ingredients[data-dish="caesar-s"] { display: flex; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="sauce"]:not(:checked)) .doner__stack[data-dish="saumon"] .sl-sauce { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="citron"]:not(:checked)) .doner__stack[data-dish="saumon"] .sl-citron { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="avocat"]:not(:checked)) .doner__stack[data-dish="saumon"] .sl-avocat { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="tomates"]:not(:checked)) .doner__stack[data-dish="saumon"] .sl-tomates { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="saumonl"]:not(:checked)) .doner__stack[data-dish="saumon"] .sl-saumonl { opacity: 0; visibility: hidden; }
+html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="chene"]:not(:checked)) .doner__stack[data-dish="saumon"] .sl-chene { opacity: 0; visibility: hidden; }
+.doner:has(input[name="dish"][value="saumon"]:checked) .doner__stack[data-dish="saumon"] { display: block; }
+.doner:has(input[name="dish"][value="saumon"]:checked) .doner__ingredients[data-dish="saumon"] { display: flex; }
+
+/* case décochée : ligne barrée (avec ou sans JS) */
+.doner__ingredients li:has(input:not(:checked)) { opacity: .38; }
+.doner__ingredients li:has(input:not(:checked)) span { text-decoration: line-through; }

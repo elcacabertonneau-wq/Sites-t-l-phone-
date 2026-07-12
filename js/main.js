@@ -105,33 +105,69 @@
   updateStatus();
   setInterval(updateStatus, 60 * 1000);
 
-  /* ---------- Döner 3D : composition à la carte + décomposition au scroll ---------- */
+  /* ---------- Visualiseur 3D : toute la carte, ingrédient par ingrédient ---------- */
   var donerSection = document.querySelector(".doner");
   var donerScene = document.getElementById("donerScene");
-  var stack = document.getElementById("donerStack");
-  var shadow = stack ? stack.querySelector(".doner__shadow") : null;
-  var layers = stack ? Array.prototype.slice.call(stack.querySelectorAll(".slayer")) : [];
-  var items = Array.prototype.slice.call(document.querySelectorAll("#donerIngredients li"));
+  var stacks = Array.prototype.slice.call(document.querySelectorAll(".doner__stack"));
+  var lists = Array.prototype.slice.call(document.querySelectorAll(".doner__ingredients"));
   var hint = document.getElementById("donerHint");
 
-  // état de chaque couche : sélectionnée ? présence et hauteur lissées
-  var state = layers.map(function (el) {
-    return { el: el, group: el.dataset.group, on: true, presence: 1, z: 0 };
-  });
+  var stack = null, shadow = null, state = [], items = [];
 
-  items.forEach(function (li) {
-    var box = li.querySelector('input[type="checkbox"]');
-    if (!box) return;
-    box.addEventListener("change", function () {
-      li.classList.toggle("is-muted", !box.checked);
+  function currentDish() {
+    var checked = document.querySelector('input[name="dish"]:checked');
+    return checked ? checked.value : (stacks[0] ? stacks[0].dataset.dish : "");
+  }
+
+  // (re)lie la pile et la liste du plat sélectionné ; assemble = animation d'apparition
+  function bindDish(assemble) {
+    var dish = currentDish();
+    stack = null;
+    stacks.forEach(function (s) { if (s.dataset.dish === dish) stack = s; });
+    var list = null;
+    lists.forEach(function (l) { if (l.dataset.dish === dish) list = l; });
+    shadow = stack ? stack.querySelector(".doner__shadow") : null;
+    items = list ? Array.prototype.slice.call(list.querySelectorAll("li")) : [];
+
+    var layers = stack ? Array.prototype.slice.call(stack.querySelectorAll(".slayer")) : [];
+    state = layers.map(function (el, i) {
+      var box = list ? list.querySelector('input[value="' + el.dataset.group + '"]') : null;
+      var on = !box || box.checked;
+      return {
+        el: el, group: el.dataset.group, on: on,
+        presence: (assemble && !prefersReducedMotion) ? 0 : (on ? 1 : 0),
+        z: 0,
+        wait: (assemble && !prefersReducedMotion) ? 6 + i * 7 : 0
+      };
+    });
+
+    if (prefersReducedMotion && stack) {
+      var n = state.length;
+      state.forEach(function (s, i) {
+        s.el.style.transform = "translateZ(" + (((n - 1) / 2 - i) * 26) + "px)";
+        s.el.style.opacity = "";
+        s.el.classList.toggle("is-off", !s.on);
+      });
+      if (shadow) shadow.style.transform = "translateZ(" + (-((n - 1) / 2) * 26 - 50) + "px)";
+      items.forEach(function (li) { li.classList.add("is-passed"); });
+    }
+  }
+
+  // délégation : choix du plat + cases d'ingrédients
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (t.name === "dish") { bindDish(true); return; }
+    if (t.type === "checkbox" && t.closest(".doner__ingredients")) {
       state.forEach(function (s) {
-        if (s.group === box.value) {
-          s.on = box.checked;
-          if (prefersReducedMotion) s.el.classList.toggle("is-off", !box.checked);
+        if (s.group === t.value) {
+          s.on = t.checked;
+          if (prefersReducedMotion) s.el.classList.toggle("is-off", !t.checked);
         }
       });
-    });
+    }
   });
+
+  bindDish(true);
 
   var progress = 0;      // valeur lissée
   var target = 0;        // valeur brute issue du scroll
@@ -156,7 +192,6 @@
 
   function render() {
     frame++;
-    // filet de sécurité : re-vérifier les reveals même si l'event scroll ne vient pas
     if (frame % 20 === 0) checkReveals();
 
     // si la page ne peut pas scroller (aperçu iframe étendu), boucle automatique
@@ -166,15 +201,14 @@
     } else {
       target = 0.5 - 0.5 * Math.cos(idleT * 1.1);
     }
-    // interpolation pour une fluidité totale
     progress += (target - progress) * 0.09;
     smoothPX += (pointerX - smoothPX) * 0.05;
     smoothPY += (pointerY - smoothPY) * 0.05;
     idleT += 0.008;
 
     var explode = easeInOut(Math.min(1, progress * 1.15)); // 0 → empilé, 1 → décomposé
-    var spin = progress * 160;                             // rotation continue pendant le scroll
-    var float = Math.sin(idleT * 2) * 6;                   // flottement permanent
+    var spin = progress * 160;
+    var float = Math.sin(idleT * 2) * 6;
 
     if (stack) {
       stack.style.transform =
@@ -182,7 +216,6 @@
         " rotateZ(" + (-32 + spin + smoothPX * 8) + "deg)" +
         " translateZ(" + float + "px)";
 
-      // amplitude totale de l'explosion, adaptée à la taille de la scène
       var sceneH = donerScene ? donerScene.clientHeight : 500;
       var spread = Math.min(sceneH * 0.8, 440);
       var selectedCount = 0;
@@ -194,7 +227,8 @@
       state.forEach(function (s, i) {
         var zTarget = s.z;
         if (s.on) { zTarget = ((Non - 1) / 2 - slot) * gap; slot++; }
-        s.presence += ((s.on ? 1 : 0) - s.presence) * 0.1;
+        if (s.wait > 0) { s.wait--; }
+        else s.presence += ((s.on ? 1 : 0) - s.presence) * 0.1;
         s.z += (zTarget - s.z) * 0.14;
         var wobble = Math.sin(idleT * 2 + i * 0.7) * explode * 4;
         var lift = (1 - s.presence) * 230; // l'ingrédient arrive et repart par le haut
@@ -229,18 +263,8 @@
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   }
 
-  var N = layers.length;
   if (stack && !prefersReducedMotion) {
     requestAnimationFrame(render);
-  } else if (stack) {
-    // mouvement réduit : pile légèrement éclatée, statique
-    stack.style.transform = "rotateX(56deg) rotateZ(-32deg)";
-    layers.forEach(function (layer, i) {
-      var offset = (N - 1) / 2 - i;
-      layer.style.transform = "translateZ(" + offset * 26 + "px)";
-    });
-    if (shadow) shadow.style.transform = "translateZ(" + (-((N - 1) / 2) * 26 - 50) + "px)";
-    items.forEach(function (li) { li.classList.add("is-passed"); });
   }
 
   /* ---------- Divers ---------- */
