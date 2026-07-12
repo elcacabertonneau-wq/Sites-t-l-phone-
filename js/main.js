@@ -105,16 +105,34 @@
   updateStatus();
   setInterval(updateStatus, 60 * 1000);
 
-  /* ---------- Döner 3D : décomposition au scroll ---------- */
+  /* ---------- Döner 3D : composition à la carte + décomposition au scroll ---------- */
   var donerSection = document.querySelector(".doner");
   var donerScene = document.getElementById("donerScene");
   var stack = document.getElementById("donerStack");
   var shadow = stack ? stack.querySelector(".doner__shadow") : null;
   var layers = stack ? Array.prototype.slice.call(stack.querySelectorAll(".slayer")) : [];
-  var ingredients = document.querySelectorAll("#donerIngredients li");
+  var items = Array.prototype.slice.call(document.querySelectorAll("#donerIngredients li"));
   var hint = document.getElementById("donerHint");
 
-  var N = layers.length; // 9 couches
+  // état de chaque couche : sélectionnée ? présence et hauteur lissées
+  var state = layers.map(function (el) {
+    return { el: el, group: el.dataset.group, on: true, presence: 1, z: 0 };
+  });
+
+  items.forEach(function (li) {
+    var box = li.querySelector('input[type="checkbox"]');
+    if (!box) return;
+    box.addEventListener("change", function () {
+      li.classList.toggle("is-muted", !box.checked);
+      state.forEach(function (s) {
+        if (s.group === box.value) {
+          s.on = box.checked;
+          if (prefersReducedMotion) s.el.classList.toggle("is-off", !box.checked);
+        }
+      });
+    });
+  });
+
   var progress = 0;      // valeur lissée
   var target = 0;        // valeur brute issue du scroll
   var pointerX = 0, pointerY = 0, smoothPX = 0, smoothPY = 0;
@@ -167,26 +185,42 @@
       // amplitude totale de l'explosion, adaptée à la taille de la scène
       var sceneH = donerScene ? donerScene.clientHeight : 500;
       var spread = Math.min(sceneH * 0.8, 440);
-      var gap = 8 + explode * spread / (N - 1);
-      var lowestZ = -((N - 1) / 2) * gap;
+      var selectedCount = 0;
+      state.forEach(function (s) { if (s.on) selectedCount++; });
+      var Non = Math.max(selectedCount, 2);
+      var gap = 8 + explode * spread / (Non - 1);
+      var slot = 0;
 
-      layers.forEach(function (layer, i) {
-        // i=0 en haut, dernier en bas ; centré autour du milieu de la pile
-        var offset = (N - 1) / 2 - i;
+      state.forEach(function (s, i) {
+        var zTarget = s.z;
+        if (s.on) { zTarget = ((Non - 1) / 2 - slot) * gap; slot++; }
+        s.presence += ((s.on ? 1 : 0) - s.presence) * 0.1;
+        s.z += (zTarget - s.z) * 0.14;
         var wobble = Math.sin(idleT * 2 + i * 0.7) * explode * 4;
-        layer.style.transform = "translateZ(" + (offset * gap + wobble) + "px)";
+        var lift = (1 - s.presence) * 230; // l'ingrédient arrive et repart par le haut
+        s.el.style.transform =
+          "translateZ(" + (s.z + wobble + lift) + "px)" +
+          " scale(" + (0.55 + 0.45 * s.presence) + ")";
+        s.el.style.opacity = Math.max(0, Math.min(1, s.presence * 1.5 - 0.15));
       });
+
+      var lowestZ = -((Non - 1) / 2) * gap;
       if (shadow) shadow.style.transform = "translateZ(" + (lowestZ - 50) + "px)";
     }
 
-    // ingrédient actif selon la progression (du haut vers le bas)
-    var idx = Math.min(N - 1, Math.floor(explode * N));
-    ingredients.forEach(function (li, i) {
+    // ingrédient actif selon la progression, parmi les cochés
+    var activeItems = items.filter(function (li) {
+      var box = li.querySelector("input");
+      return !box || box.checked;
+    });
+    var idx = Math.min(activeItems.length - 1, Math.floor(explode * activeItems.length));
+    items.forEach(function (li) { li.classList.remove("is-active", "is-passed"); });
+    activeItems.forEach(function (li, i) {
       li.classList.toggle("is-active", i === idx && explode > 0.04);
       li.classList.toggle("is-passed", i < idx);
     });
 
-    if (hint) hint.classList.toggle("is-hidden", progress > 0.08);
+    if (hint) hint.classList.toggle("is-hidden", progress > 0.5);
 
     requestAnimationFrame(render);
   }
@@ -195,6 +229,7 @@
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   }
 
+  var N = layers.length;
   if (stack && !prefersReducedMotion) {
     requestAnimationFrame(render);
   } else if (stack) {
@@ -205,7 +240,7 @@
       layer.style.transform = "translateZ(" + offset * 26 + "px)";
     });
     if (shadow) shadow.style.transform = "translateZ(" + (-((N - 1) / 2) * 26 - 50) + "px)";
-    ingredients.forEach(function (li) { li.classList.add("is-passed"); });
+    items.forEach(function (li) { li.classList.add("is-passed"); });
   }
 
   /* ---------- Divers ---------- */

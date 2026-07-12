@@ -470,134 +470,30 @@ html:not(.js) .nav {
   /* rotation de base appliquée en JS */
 }
 
-/* Chaque couche du sandwich */
+/* Chaque couche du sandwich — dessinée en SVG détaillé */
 .slayer {
   position: absolute;
-  inset: 12%;
-  border-radius: 50%;
+  inset: 10% 2%;
   transform-style: preserve-3d;
-  will-change: transform;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
+  will-change: transform, opacity;
 }
+.slayer svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.slayer--bread-top svg,
+.slayer--bread-bot svg,
+.slayer--meat svg { filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .35)); }
 
-/* Pain pide : galette plate et allongée, croûte dorée, pas un bun de burger */
-.slayer--bread-top { --off: 4;
-  inset: 16% 4%;
-  border-radius: 48% 52% 50% 50% / 90% 85% 88% 92%;
-  background:
-    radial-gradient(ellipse 120% 90% at 42% 28%, #f3cd8c, #dda45c 55%, #b07338 85%, #8f5626);
-  box-shadow:
-    inset 0 -10px 18px rgba(90, 50, 15, .45),
-    inset 0 8px 14px rgba(255, 235, 190, .5),
-    0 18px 40px rgba(0, 0, 0, .35);
-}
-.slayer--bread-top i {
-  position: absolute; inset: 0;
-  border-radius: inherit;
-  /* graines de sésame + lignes de cuisson du pide */
-  background-image:
-    radial-gradient(5px 3px at 26% 36%, #fdf0d2 98%, transparent),
-    radial-gradient(5px 3px at 48% 22%, #fdf0d2 98%, transparent),
-    radial-gradient(5px 3px at 68% 38%, #fdf0d2 98%, transparent),
-    radial-gradient(5px 3px at 38% 52%, #fdf0d2 98%, transparent),
-    radial-gradient(5px 3px at 60% 62%, #fdf0d2 98%, transparent),
-    radial-gradient(5px 3px at 78% 56%, #fdf0d2 98%, transparent),
-    radial-gradient(5px 3px at 22% 64%, #fdf0d2 98%, transparent),
-    repeating-linear-gradient(100deg, transparent 0 26px, rgba(120, 70, 25, .35) 26px 30px);
-}
+.slayer--bread-top { --off: 4; }
+.slayer--sauce     { --off: 3;  inset: 16% 8%; }
+.slayer--onion     { --off: 2;  inset: 15% 8%; }
+.slayer--tomato    { --off: 1;  inset: 14% 7%; }
+.slayer--cabbage   { --off: 0;  inset: 13% 5%; }
+.slayer--salad     { --off: -1; inset: 12% 3%; }
+.slayer--feta      { --off: -2; inset: 16% 9%; }
+.slayer--meat      { --off: -3; inset: 12% 4%; }
+.slayer--bread-bot { --off: -4; inset: 9% 1%; }
 
-.slayer--sauce { --off: 3;
-  background: radial-gradient(circle at 45% 40%, #fdf6e3, #f2e3bd 60%, #e4cf9b);
-  inset: 20% 8%;
-  border-radius: 46% 54% 52% 48% / 50% 47% 53% 50%;
-}
-
-.slayer--onion { --off: 2; inset: 22% 12%; box-shadow: none; background: transparent; }
-.slayer--onion b {
-  position: absolute;
-  width: 42%; height: 42%;
-  border: 5px solid #c86bd8;
-  border-radius: 50%;
-  background: rgba(240, 200, 250, .35);
-}
-.slayer--onion b:nth-child(1) { top: 5%; left: 8%; }
-.slayer--onion b:nth-child(2) { top: 30%; right: 4%; width: 36%; height: 36%; }
-.slayer--onion b:nth-child(3) { bottom: 2%; left: 28%; width: 38%; height: 38%; }
-
-.slayer--tomato { --off: 1; inset: 20% 10%; box-shadow: none; background: transparent; }
-.slayer--tomato b {
-  position: absolute;
-  width: 46%; height: 46%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #ff8a75, #e8402a 62%, #c22a18);
-  box-shadow: inset 0 0 0 4px rgba(255, 190, 170, .55), 0 10px 22px rgba(0,0,0,.3);
-}
-.slayer--tomato b:nth-child(1) { top: 2%; left: 6%; }
-.slayer--tomato b:nth-child(2) { top: 26%; right: 2%; }
-.slayer--tomato b:nth-child(3) { bottom: 0; left: 26%; }
-
-.slayer--cabbage { --off: 0;
-  inset: 18% 7%;
-  background:
-    repeating-conic-gradient(from 20deg, #8a3fb8 0 14deg, #b06ad4 14deg 26deg, #6d2f96 26deg 40deg);
-  border-radius: 43% 57% 49% 51% / 55% 44% 56% 45%;
-  filter: saturate(1.1);
-}
-
-.slayer--salad { --off: -1;
-  inset: 17% 5%;
-  background:
-    radial-gradient(circle at 30% 30%, #9ede56, #5cb52e 55%, #3f8c1e);
-  border-radius: 58% 42% 55% 45% / 45% 60% 40% 55%;
-}
-
-.slayer--feta { --off: -2; inset: 24% 14%; box-shadow: none; background: transparent; }
-.slayer--feta b {
-  position: absolute;
-  width: 24%; height: 20%;
-  background: linear-gradient(145deg, #ffffff, #e9eef0);
-  border-radius: 18%;
-  box-shadow: 0 6px 14px rgba(0,0,0,.3);
-}
-.slayer--feta b:nth-child(1) { top: 8%; left: 14%; transform: rotate(-14deg); }
-.slayer--feta b:nth-child(2) { top: 20%; right: 10%; transform: rotate(20deg); }
-.slayer--feta b:nth-child(3) { bottom: 14%; left: 24%; transform: rotate(8deg); }
-.slayer--feta b:nth-child(4) { bottom: 6%; right: 22%; transform: rotate(-22deg); }
-
-/* Viande : copeaux de döner découpés à la broche, pas un steak haché */
-.slayer--meat { --off: -3; inset: 15% 6%; box-shadow: none; background: transparent; }
-.slayer--meat b {
-  position: absolute;
-  height: 26%;
-  border-radius: 45% 55% 50% 50% / 80% 70% 90% 75%;
-  background: linear-gradient(100deg, #b5734a, #8a4f2b 45%, #6b3819 80%);
-  box-shadow:
-    inset 0 4px 6px rgba(255, 200, 150, .35),
-    inset 0 -5px 8px rgba(40, 18, 5, .55),
-    0 10px 22px rgba(0, 0, 0, .4);
-}
-.slayer--meat b::after {
-  content: "";
-  position: absolute; inset: 12% 8%;
-  border-radius: inherit;
-  background: repeating-linear-gradient(95deg, transparent 0 9px, rgba(45, 20, 5, .3) 9px 12px);
-}
-.slayer--meat b:nth-child(1) { width: 58%; top: 4%;  left: 4%;  transform: rotate(-9deg); }
-.slayer--meat b:nth-child(2) { width: 52%; top: 16%; right: 2%; transform: rotate(7deg); }
-.slayer--meat b:nth-child(3) { width: 62%; top: 38%; left: 12%; transform: rotate(-3deg); }
-.slayer--meat b:nth-child(4) { width: 50%; bottom: 14%; left: 2%;  transform: rotate(10deg); }
-.slayer--meat b:nth-child(5) { width: 54%; bottom: 2%;  right: 6%; transform: rotate(-12deg); }
-
-.slayer--bread-bot { --off: -4;
-  inset: 16% 3%;
-  border-radius: 50% 50% 48% 52% / 88% 92% 86% 90%;
-  background:
-    radial-gradient(ellipse 120% 90% at 45% 30%, #ecbd75, #cf9349 55%, #a56b31 85%, #7f5022);
-  box-shadow:
-    inset 0 -12px 20px rgba(80, 45, 12, .5),
-    inset 0 6px 12px rgba(255, 230, 180, .4),
-    0 18px 40px rgba(0, 0, 0, .35);
-}
+/* couche décochée (utilisé par les modes sans animation JS) */
+.slayer.is-off { opacity: 0; visibility: hidden; }
 
 .doner__shadow {
   position: absolute;
@@ -1233,3 +1129,65 @@ body::after {
 /* resserrer l'espace entre le menu et le contact */
 .contact { padding-top: clamp(2rem, 4vw, 3.5rem); }
 .menu { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+
+
+/* ============================================================
+   CONFIGURATEUR — composez votre kebap
+   ============================================================ */
+
+.doner__ingredients li { display: flex; align-items: center; gap: .5rem; }
+.doner__ingredients label {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.doner__ingredients input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  flex: none;
+  border: 2px solid rgba(255, 255, 255, .32);
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  margin: 0;
+  transition: border-color .2s ease;
+}
+.doner__ingredients input[type="checkbox"]::after {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  background: var(--yellow);
+  box-shadow: 0 0 8px rgba(249, 201, 60, .6);
+  scale: 0;
+  transition: scale .18s cubic-bezier(.2, .9, .3, 1.6);
+}
+.doner__ingredients input[type="checkbox"]:checked { border-color: var(--yellow); }
+.doner__ingredients input[type="checkbox"]:checked::after { scale: 1; }
+.doner__ingredients li.is-muted { opacity: .38; }
+.doner__ingredients li.is-muted span { text-decoration: line-through; }
+
+@media (max-width: 760px) {
+  .doner__ingredients input[type="checkbox"] { width: 14px; height: 14px; }
+}
+
+/* sans JS : les cases pilotent les couches en pur CSS */
+html:not(.js) .slayer { transition: opacity .45s ease, visibility .45s; }
+html:not(.js) .doner:has(input[value="pain"]:not(:checked))    :is(.slayer--bread-top, .slayer--bread-bot),
+html:not(.js) .doner:has(input[value="sauce"]:not(:checked))   .slayer--sauce,
+html:not(.js) .doner:has(input[value="oignons"]:not(:checked)) .slayer--onion,
+html:not(.js) .doner:has(input[value="tomates"]:not(:checked)) .slayer--tomato,
+html:not(.js) .doner:has(input[value="chou"]:not(:checked))    .slayer--cabbage,
+html:not(.js) .doner:has(input[value="salade"]:not(:checked))  .slayer--salad,
+html:not(.js) .doner:has(input[value="feta"]:not(:checked))    .slayer--feta,
+html:not(.js) .doner:has(input[value="kebap"]:not(:checked))   .slayer--meat {
+  opacity: 0;
+  visibility: hidden;
+}
+html:not(.js) .doner__ingredients li:has(input:not(:checked)) { opacity: .38; }
+html:not(.js) .doner__ingredients li:has(input:not(:checked)) span { text-decoration: line-through; }
