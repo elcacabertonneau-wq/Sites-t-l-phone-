@@ -113,6 +113,7 @@
   var hint = document.getElementById("donerHint");
 
   var stack = null, shadow = null, state = [], items = [];
+  var rotXBase = 56, spreadK = 1, gapBase = 8;
 
   function currentDish() {
     var checked = document.querySelector('input[name="dish"]:checked');
@@ -128,6 +129,9 @@
     lists.forEach(function (l) { if (l.dataset.dish === dish) list = l; });
     shadow = stack ? stack.querySelector(".doner__shadow") : null;
     items = list ? Array.prototype.slice.call(list.querySelectorAll("li")) : [];
+    rotXBase = stack ? (parseFloat(stack.dataset.rotx) || 56) : 56;
+    spreadK = stack ? (parseFloat(stack.dataset.spread) || 1) : 1;
+    gapBase = stack ? (parseFloat(stack.dataset.gapbase) || 8) : 8;
 
     var layers = stack ? Array.prototype.slice.call(stack.querySelectorAll(".slayer")) : [];
     state = layers.map(function (el, i) {
@@ -135,6 +139,9 @@
       var on = !box || box.checked;
       return {
         el: el, group: el.dataset.group, on: on,
+        dx: parseFloat(el.dataset.dx) || 0,
+        dy: parseFloat(el.dataset.dy) || 0,
+        tilt: parseFloat(el.dataset.tilt) || 0,
         presence: (assemble && !prefersReducedMotion) ? 0 : (on ? 1 : 0),
         z: 0,
         wait: (assemble && !prefersReducedMotion) ? 6 + i * 7 : 0
@@ -144,7 +151,9 @@
     if (prefersReducedMotion && stack) {
       var n = state.length;
       state.forEach(function (s, i) {
-        s.el.style.transform = "translateZ(" + (((n - 1) / 2 - i) * 26) + "px)";
+        s.el.style.transform =
+          "translate3d(" + s.dx + "px," + s.dy + "px," + (((n - 1) / 2 - i) * 26) + "px)" +
+          " rotateX(" + s.tilt + "deg)";
         s.el.style.opacity = "";
         s.el.classList.toggle("is-off", !s.on);
       });
@@ -212,16 +221,16 @@
 
     if (stack) {
       stack.style.transform =
-        "rotateX(" + (56 + smoothPY * 5) + "deg)" +
+        "rotateX(" + (rotXBase + smoothPY * 5) + "deg)" +
         " rotateZ(" + (-32 + spin + smoothPX * 8) + "deg)" +
         " translateZ(" + float + "px)";
 
       var sceneH = donerScene ? donerScene.clientHeight : 500;
-      var spread = Math.min(sceneH * 0.8, 440);
+      var spread = Math.min(sceneH * 0.8, 440) * spreadK;
       var selectedCount = 0;
       state.forEach(function (s) { if (s.on) selectedCount++; });
       var Non = Math.max(selectedCount, 2);
-      var gap = 8 + explode * spread / (Non - 1);
+      var gap = gapBase + explode * spread / (Non - 1);
       var slot = 0;
 
       state.forEach(function (s, i) {
@@ -232,8 +241,10 @@
         s.z += (zTarget - s.z) * 0.14;
         var wobble = Math.sin(idleT * 2 + i * 0.7) * explode * 4;
         var lift = (1 - s.presence) * 230; // l'ingrédient arrive et repart par le haut
+        var k = 1 + explode * 0.8;         // la dispersion s'amplifie en se décomposant
         s.el.style.transform =
-          "translateZ(" + (s.z + wobble + lift) + "px)" +
+          "translate3d(" + (s.dx * k) + "px," + (s.dy * k) + "px," + (s.z + wobble + lift) + "px)" +
+          " rotateX(" + s.tilt + "deg)" +
           " scale(" + (0.55 + 0.45 * s.presence) + ")";
         s.el.style.opacity = Math.max(0, Math.min(1, s.presence * 1.5 - 0.15));
       });

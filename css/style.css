@@ -580,8 +580,8 @@ html:not(.js) .doner__ingredients li { opacity: .85; color: var(--white); }
   to   { transform: rotateX(56deg) rotateZ(148deg); }
 }
 @keyframes layer-explode-scroll {
-  0%, 18%   { transform: translateZ(calc(var(--off) * 9px)); }
-  82%, 100% { transform: translateZ(calc(var(--off) * 40px)); }
+  0%, 18%   { transform: translate3d(var(--dx, 0px), var(--dy, 0px), calc(var(--off) * 9px)) rotateX(var(--tilt, 0deg)); }
+  82%, 100% { transform: translate3d(calc(var(--dx, 0px) * 1.8), calc(var(--dy, 0px) * 1.8), calc(var(--off) * 40px)) rotateX(var(--tilt, 0deg)); }
 }
 
 /* 2 — boucle automatique si le scroll-driven CSS n'est pas supporté */
@@ -602,8 +602,8 @@ html:not(.js) .doner__ingredients li { opacity: .85; color: var(--white); }
   to   { transform: rotateX(56deg) rotateZ(360deg); }
 }
 @keyframes layer-explode {
-  0%, 12%   { transform: translateZ(calc(var(--off) * 9px)); }
-  88%, 100% { transform: translateZ(calc(var(--off) * 34px)); }
+  0%, 12%   { transform: translate3d(var(--dx, 0px), var(--dy, 0px), calc(var(--off) * 9px)) rotateX(var(--tilt, 0deg)); }
+  88%, 100% { transform: translate3d(calc(var(--dx, 0px) * 1.8), calc(var(--dy, 0px) * 1.8), calc(var(--off) * 34px)) rotateX(var(--tilt, 0deg)); }
 }
 
 /* ============================================================
@@ -1395,3 +1395,8 @@ html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="ch
 /* case décochée : ligne barrée (avec ou sans JS) */
 .doner__ingredients li:has(input:not(:checked)) { opacity: .38; }
 .doner__ingredients li:has(input:not(:checked)) span { text-decoration: line-through; }
+
+
+/* présentation par type de plat */
+.sl-lid { transform-origin: 50% 6%; }   /* couvercle de pita : bascule depuis le fond */
+.sl-bol { inset: 3% -3%; }              /* le bol des salades déborde un peu */
