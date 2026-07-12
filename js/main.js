@@ -140,6 +140,7 @@
       return {
         el: el, group: el.dataset.group, on: on,
         dx: parseFloat(el.dataset.dx) || 0,
+        sc: parseFloat(el.dataset.s) || 1,
         dy: parseFloat(el.dataset.dy) || 0,
         tilt: parseFloat(el.dataset.tilt) || 0,
         presence: (assemble && !prefersReducedMotion) ? 0 : (on ? 1 : 0),
@@ -153,7 +154,7 @@
       state.forEach(function (s, i) {
         s.el.style.transform =
           "translate3d(" + s.dx + "px," + s.dy + "px," + (((n - 1) / 2 - i) * 26) + "px)" +
-          " rotateX(" + s.tilt + "deg)";
+          " rotateX(" + s.tilt + "deg) scale(" + s.sc + ")";
         s.el.style.opacity = "";
         s.el.classList.toggle("is-off", !s.on);
       });
@@ -245,7 +246,7 @@
         s.el.style.transform =
           "translate3d(" + (s.dx * k) + "px," + (s.dy * k) + "px," + (s.z + wobble + lift) + "px)" +
           " rotateX(" + s.tilt + "deg)" +
-          " scale(" + (0.55 + 0.45 * s.presence) + ")";
+          " scale(" + ((0.55 + 0.45 * s.presence) * s.sc) + ")";
         s.el.style.opacity = Math.max(0, Math.min(1, s.presence * 1.5 - 0.15));
       });
 
