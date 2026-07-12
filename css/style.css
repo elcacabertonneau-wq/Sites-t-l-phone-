@@ -1400,3 +1400,20 @@ html:not(.js) .doner:has(.doner__ingredients[data-dish="saumon"] input[value="ch
 /* présentation par type de plat */
 .sl-lid { transform-origin: 50% 6%; }   /* couvercle de pita : bascule depuis le fond */
 .sl-bol { inset: 1% -6%; }              /* le bol des salades déborde un peu */
+
+
+/* sans JS : les plats "sprite" (pita repliée, bol) restent face caméra */
+@supports (animation-timeline: view()) {
+  html:not(.js) .doner__stack[data-spin=".15"] { animation-name: stack-still-scroll; }
+}
+@supports not (animation-timeline: view()) {
+  html:not(.js) .doner__stack[data-spin=".15"] { animation-name: stack-still-loop; }
+}
+@keyframes stack-still-scroll {
+  from { transform: rotateX(25deg) rotateZ(-6deg); }
+  to   { transform: rotateX(25deg) rotateZ(10deg); }
+}
+@keyframes stack-still-loop {
+  from { transform: rotateX(25deg) rotateZ(-6deg); }
+  to   { transform: rotateX(25deg) rotateZ(6deg); }
+}

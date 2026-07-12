@@ -113,7 +113,7 @@
   var hint = document.getElementById("donerHint");
 
   var stack = null, shadow = null, state = [], items = [];
-  var rotXBase = 56, spreadK = 1, gapBase = 8;
+  var rotXBase = 56, spreadK = 1, gapBase = 8, spinK = 1, kFactor = 0.8;
 
   function currentDish() {
     var checked = document.querySelector('input[name="dish"]:checked');
@@ -132,6 +132,8 @@
     rotXBase = stack ? (parseFloat(stack.dataset.rotx) || 56) : 56;
     spreadK = stack ? (parseFloat(stack.dataset.spread) || 1) : 1;
     gapBase = stack ? (parseFloat(stack.dataset.gapbase) || 8) : 8;
+    spinK = stack ? (isNaN(parseFloat(stack.dataset.spin)) ? 1 : parseFloat(stack.dataset.spin)) : 1;
+    kFactor = stack ? (parseFloat(stack.dataset.k) || 0.8) : 0.8;
 
     var layers = stack ? Array.prototype.slice.call(stack.querySelectorAll(".slayer")) : [];
     state = layers.map(function (el, i) {
@@ -217,13 +219,13 @@
     idleT += 0.008;
 
     var explode = easeInOut(Math.min(1, progress * 1.15)); // 0 → empilé, 1 → décomposé
-    var spin = progress * 160;
+    var spin = progress * 160 * spinK;
     var float = Math.sin(idleT * 2) * 6;
 
     if (stack) {
       stack.style.transform =
         "rotateX(" + (rotXBase + smoothPY * 5) + "deg)" +
-        " rotateZ(" + (-32 + spin + smoothPX * 8) + "deg)" +
+        " rotateZ(" + ((-32 + spin) * spinK + smoothPX * 8) + "deg)" +
         " translateZ(" + float + "px)";
 
       var sceneH = donerScene ? donerScene.clientHeight : 500;
@@ -242,7 +244,7 @@
         s.z += (zTarget - s.z) * 0.14;
         var wobble = Math.sin(idleT * 2 + i * 0.7) * explode * 4;
         var lift = (1 - s.presence) * 230; // l'ingrédient arrive et repart par le haut
-        var k = 1 + explode * 0.8;         // la dispersion s'amplifie en se décomposant
+        var k = 1 + explode * kFactor;     // la dispersion s'amplifie en se décomposant
         s.el.style.transform =
           "translate3d(" + (s.dx * k) + "px," + (s.dy * k) + "px," + (s.z + wobble + lift) + "px)" +
           " rotateX(" + s.tilt + "deg)" +
